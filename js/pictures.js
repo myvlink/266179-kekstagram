@@ -39,11 +39,7 @@ var generateInteger = function (min, max) {
 
 // Генерация комментов
 var generateComments = function () {
-  if (generateInteger(1, 2) > 1) {
-    return [PHOTO_COMMENTS[generateInteger(0, PHOTO_COMMENTS.length - 1)], PHOTO_COMMENTS[generateInteger(0, PHOTO_COMMENTS.length - 1)]];
-  } else {
-    return [PHOTO_COMMENTS[generateInteger(0, PHOTO_COMMENTS.length - 1)]];
-  }
+  return generateInteger(1, 2) > 1 ? [PHOTO_COMMENTS[generateInteger(0, PHOTO_COMMENTS.length - 1)], PHOTO_COMMENTS[generateInteger(0, PHOTO_COMMENTS.length - 1)]] : [PHOTO_COMMENTS[generateInteger(0, PHOTO_COMMENTS.length - 1)]];
 };
 
 // Генерация описания
@@ -81,11 +77,14 @@ var renderPicture = function (picture) {
 };
 
 // Вставка фотографий на главную
-var fragment = document.createDocumentFragment();
-for (var i = 1; i <= PHOTO_QUANTITY; i++) {
-  fragment.appendChild(renderPicture(photoParameters[i]));
-}
-picturesContainer.appendChild(fragment);
+var createGallery = function () {
+  var fragment = document.createDocumentFragment();
+  for (var i = 1; i <= PHOTO_QUANTITY; i++) {
+    fragment.appendChild(renderPicture(photoParameters[i]));
+  }
+  picturesContainer.appendChild(fragment);
+};
+createGallery();
 
 // Отображение окна картинки
 var bigPicture = document.querySelector('.big-picture');
@@ -96,8 +95,8 @@ var renderBigPicture = function (picture) {
   document.querySelector('.big-picture__img img').src = picture.url;
   document.querySelector('.likes-count').textContent = picture.likes;
   document.querySelector('.comments-count').textContent = picture.comments.length;
-  fragment = document.createDocumentFragment();
-  for (i = 0; i < picture.comments.length; i++) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < picture.comments.length; i++) {
     var comment = document.createElement('li');
     var avatar = document.createElement('img');
     var text = document.createElement('p');
@@ -120,5 +119,9 @@ var renderBigPicture = function (picture) {
 renderBigPicture(photoParameters[1]);
 
 // Скрытие элементов
-document.querySelector('.social__comment-count').classList.add('visually-hidden');
-document.querySelector('.social__loadmore').classList.add('visually-hidden');
+var hideElement = function (element) {
+  document.querySelector(element).classList.add('visually-hidden');
+};
+
+hideElement('.social__comment-count');
+hideElement('.social__loadmore');
