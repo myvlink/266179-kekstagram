@@ -137,26 +137,26 @@ var effectPhobosButton = document.getElementById('effect-phobos');
 var effectHeatButton = document.getElementById('effect-heat');
 
 var removeEffects = function () {
-  imageUploadPreview.classList.remove('effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat');
+  imageUploadPreview.removeAttribute('class');
 };
 var addChromeEffect = function () {
-  imageUploadPreview.classList.remove('effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat');
+  removeEffects();
   imageUploadPreview.classList.add('effects__preview--chrome');
 };
 var addSepiaEffect = function () {
-  imageUploadPreview.classList.remove('effects__preview--chrome', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat');
+  removeEffects();
   imageUploadPreview.classList.add('effects__preview--sepia');
 };
 var addMarvinEffect = function () {
-  imageUploadPreview.classList.remove('effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--phobos', 'effects__preview--heat');
+  removeEffects();
   imageUploadPreview.classList.add('effects__preview--marvin');
 };
 var addPhobosEffect = function () {
-  imageUploadPreview.classList.remove('effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--heat');
+  removeEffects();
   imageUploadPreview.classList.add('effects__preview--phobos');
 };
 var addHeatEffect = function () {
-  imageUploadPreview.classList.remove('effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos');
+  removeEffects();
   imageUploadPreview.classList.add('effects__preview--heat');
 };
 effectNoneButton.addEventListener('click', removeEffects);
@@ -203,8 +203,8 @@ var closeBigPicture = function () {
   bigPicture.classList.add('hidden');
 };
 var closeButtonBigPicture = document.querySelector('.big-picture__cancel');
+var galery = document.querySelector('.pictures');
 var openBigPictureHandler = function () {
-  var galery = document.querySelector('.pictures');
   var userImages = document.querySelectorAll('.picture__img');
   galery.addEventListener('click', function (evt) {
     var target = evt.target;
