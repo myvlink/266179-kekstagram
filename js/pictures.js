@@ -225,3 +225,33 @@ var hideElement = function (element) {
 
 hideElement('.social__comment-count');
 hideElement('.social__loadmore');
+
+// Валидация хэш-тегов
+var hashtagsInputField = document.querySelector('.text__hashtags');
+var checkValidity = function () {
+  var hashtagsArray = hashtagsInputField.value.split(' ');
+  hashtagsInputField.setCustomValidity('');
+  if (hashtagsArray.length > 5) {
+    hashtagsInputField.setCustomValidity('Задайте не более пяти хэш-тегов.');
+    return;
+  }
+  for (var i = 0; i < hashtagsArray.length; i++) {
+    if (hashtagsArray[i].charAt(0) !== '#') {
+      hashtagsInputField.setCustomValidity('хэш-тег начинается с символа #');
+    } else if (hashtagsArray[i].length < 2) {
+      hashtagsInputField.setCustomValidity('хеш-тег не может состоять только из одной решётки');
+    } else if (hashtagsArray[i].length > 20) {
+      hashtagsInputField.setCustomValidity('Хэш-тег не может быть длиннее 20 символов.');
+    } else {
+      for (i = 0; i < hashtagsArray.length; i++) {
+        for (var j = hashtagsArray.length; j > 0; j--) {
+          if (hashtagsArray[i] === hashtagsArray[j]) {
+            hashtagsInputField.setCustomValidity('один и тот же хэш-тег не может быть использован дважды');
+          }
+        }
+      }
+    } return;
+  }
+};
+
+hashtagsInputField.addEventListener('keyup', checkValidity);
