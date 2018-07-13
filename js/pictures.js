@@ -244,7 +244,7 @@ var checkValidity = function () {
       hashtagsInputField.setCustomValidity('Хэш-тег не может быть длиннее 20 символов.');
     } else {
       for (i = 0; i < hashtagsArray.length; i++) {
-        for (var j = hashtagsArray.length; j > 0; j--) {
+        for (var j = 1; j < hashtagsArray.length + 1; j++) {
           if (hashtagsArray[i] === hashtagsArray[j]) {
             hashtagsInputField.setCustomValidity('один и тот же хэш-тег не может быть использован дважды');
           }
