@@ -237,6 +237,8 @@ var generateUniqueArray = function (array) {
 };
 
 // Валидация хэш-тегов
+var MIN_HASHTAG_LENGTH = 2;
+var MAX_HASHTAG_LENGTH = 20;
 var hashtagsInputField = document.querySelector('.text__hashtags');
 var checkValidity = function () {
   var hashtagsArray = hashtagsInputField.value.split(' ');
@@ -248,9 +250,9 @@ var checkValidity = function () {
   for (var i = 0; i < hashtagsArray.length; i++) {
     if (hashtagsArray[i].charAt(0) !== '#') {
       hashtagsInputField.setCustomValidity('хэш-тег начинается с символа #');
-    } else if (hashtagsArray[i].length < 2) {
+    } else if (hashtagsArray[i].length < MIN_HASHTAG_LENGTH) {
       hashtagsInputField.setCustomValidity('хеш-тег не может состоять только из одной решётки');
-    } else if (hashtagsArray[i].length > 20) {
+    } else if (hashtagsArray[i].length > MAX_HASHTAG_LENGTH) {
       hashtagsInputField.setCustomValidity('Хэш-тег не может быть длиннее 20 символов.');
     } else if (hashtagsArray.length !== generateUniqueArray(hashtagsArray).length) {
       hashtagsInputField.setCustomValidity('Хэш-теги не должнгы повторияться');
