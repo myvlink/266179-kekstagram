@@ -244,7 +244,7 @@ var moveSliderChangeFilter = function () {
         scalePin.style.left = scalePin.offsetLeft + shift + 'px';
       }
       startCoordX = moveEvt.clientX;
-      scaleValue.value = 100 * scalePin.offsetLeft / scaleLine.offsetWidth;
+      scaleValue.value = Math.round(100 * scalePin.offsetLeft / scaleLine.offsetWidth);
       scaleLevel.style.width = scaleValue.value + '%';
       applyEffect();
     };
