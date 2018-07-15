@@ -102,15 +102,34 @@ var uploadCloseButton = document.getElementById('upload-cancel');
 var uploadSetupWindows = document.querySelector('.img-upload__overlay');
 var openUploadSetup = function () {
   uploadSetupWindows.classList.remove('hidden');
+  effectNoneButton.addEventListener('click', applyEffect);
+  effectChromeButton.addEventListener('click', applyEffect);
+  effectSepiaButton.addEventListener('click', applyEffect);
+  effectMarvinButton.addEventListener('click', applyEffect);
+  effectPhobosButton.addEventListener('click', applyEffect);
+  effectHeatButton.addEventListener('click', applyEffect);
+  resizeButtonMinus.addEventListener('click', reduceImage);
+  resizeButtonPlus.addEventListener('click', increaseImage);
+  uploadCloseButton.addEventListener('click', closeUploadSetup);
+  moveSliderChangeFilter();
 };
-openUploadSetup();
 var closeUploadSetup = function () {
   uploadSetupWindows.classList.add('hidden');
   removeEffects();
   uploadPreviewWindow.style.transform = 'scale(1)';
+  effectNoneButton.removeEventListener('click', applyEffect);
+  effectChromeButton.removeEventListener('click', applyEffect);
+  effectSepiaButton.removeEventListener('click', applyEffect);
+  effectMarvinButton.removeEventListener('click', applyEffect);
+  effectPhobosButton.removeEventListener('click', applyEffect);
+  effectHeatButton.removeEventListener('click', applyEffect);
+  resizeButtonMinus.removeEventListener('click', reduceImage);
+  resizeButtonPlus.removeEventListener('click', increaseImage);
+  uploadCloseButton.removeEventListener('click', closeUploadSetup);
+  resetScaleValue();
+  uploadButton.value = '';
 };
-uploadButton.addEventListener('change', openUploadSetup);
-uploadCloseButton.addEventListener('click', closeUploadSetup);
+
 
 // Управление размером
 var reduceImage = function () {
@@ -125,8 +144,6 @@ var increaseImage = function () {
     uploadPreviewWindow.style.transform = 'scale(' + resizeValue.value.slice(0, -1) / 100 + ')';
   }
 };
-resizeButtonMinus.addEventListener('click', reduceImage);
-resizeButtonPlus.addEventListener('click', increaseImage);
 
 // Применение эффекта на изображение
 var effectNoneButton = document.getElementById('effect-none');
@@ -202,46 +219,48 @@ var addHeatEffect = function () {
   imageUploadPreview.style.filter = 'brightness(' + (1 + ((scaleValue.value / 100) * 2)) + ')';
 };
 
-effectNoneButton.addEventListener('click', applyEffect);
-effectChromeButton.addEventListener('click', applyEffect);
-effectSepiaButton.addEventListener('click', applyEffect);
-effectMarvinButton.addEventListener('click', applyEffect);
-effectPhobosButton.addEventListener('click', applyEffect);
-effectHeatButton.addEventListener('click', applyEffect);
-
 // Перетаскивание пина и изменение эффекта
 var scaleValue = document.querySelector('.scale__value');
 var scaleLine = document.querySelector('.scale__line');
 var scaleLevel = document.querySelector('.scale__level');
 var scalePin = document.querySelector('.scale__pin');
+var startCoordX = 0;
+var resetScaleValue = function () {
+  scaleValue.value = 100;
+  scaleLevel.style.width = scaleValue.value + '%';
+  scalePin.style.left = scaleValue.value + '%';
+};
+scalePin.style.left = scaleValue.value + '%';
+var moveSliderChangeFilter = function () {
+  scalePin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+    startCoordX = evt.clientX;
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+      var shift = moveEvt.clientX - startCoordX;
+      if (scalePin.offsetLeft + shift < 0 || scalePin.offsetLeft + shift > scaleLine.offsetWidth) {
+        scalePin.style.left = scalePin.offsetLeft + 'px';
+      } else {
+        scalePin.style.left = scalePin.offsetLeft + shift + 'px';
+      }
+      startCoordX = moveEvt.clientX;
+      scaleValue.value = 100 * scalePin.offsetLeft / scaleLine.offsetWidth;
+      scaleLevel.style.width = scaleValue.value + '%';
+      applyEffect();
+    };
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      applyEffect();
+    };
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
+  applyEffect();
+};
 
-scalePin.addEventListener('mousedown', function (evt) {
-  evt.preventDefault();
-  var startCoordX = evt.clientX;
-  var onMouseMove = function (moveEvt) {
-    moveEvt.preventDefault();
-    var shift = moveEvt.clientX - startCoordX;
-    startCoordX = moveEvt.clientX;
-
-    if (scalePin.offsetLeft + shift < 0 || scalePin.offsetLeft + shift > scaleLine.offsetWidth) {
-      scalePin.style.left = scalePin.offsetLeft + 'px';
-    } else {
-      scalePin.style.left = scalePin.offsetLeft + shift + 'px';
-    }
-    scaleValue.value = 100 * scalePin.offsetLeft / scaleLine.offsetWidth;
-    scaleLevel.style.width = scaleValue.value + '%';
-    applyEffect();
-  };
-  var onMouseUp = function (upEvt) {
-    upEvt.preventDefault();
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
-    applyEffect();
-  };
-  document.addEventListener('mousemove', onMouseMove);
-  document.addEventListener('mouseup', onMouseUp);
-});
-applyEffect();
+uploadButton.addEventListener('change', openUploadSetup);
 
 // Заполнение большой картинки
 var renderBigPicture = function (picture) {
