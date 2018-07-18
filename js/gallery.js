@@ -23,9 +23,9 @@
   };
 
   // Создание галереи и рендер большой картинки из скачанных данных
-  var callback = function (data) {
+  var processData = function (data) {
     createGallery(data);
     window.bigPicture.renderBigPicture(data);
   };
-  window.backend.load(callback, window.utils.errorHandler);
+  window.backend.load(processData, window.utils.errorHandler);
 })();
