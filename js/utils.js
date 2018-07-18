@@ -6,9 +6,13 @@
     generateInteger: function (min, max) {
       return Math.floor(min + Math.random() * (max + 1 - min));
     },
-    // Скрытие элементов
-    hideElement: function (element) {
+    // Визуальное скрытие элементов
+    visuallyHideElement: function (element) {
       document.querySelector(element).classList.add('visually-hidden');
+    },
+    // Визуальное скрытие элементов
+    hideElement: function (element) {
+      document.querySelector(element).classList.add('hidden');
     },
     // Возврат массива без повторений
     generateUniqueArray: function (array) {
@@ -18,6 +22,18 @@
         obj[str] = true;
       }
       return Object.keys(obj);
+    },
+    // Вывод ошибки
+    errorHandler: function (errorMessage) {
+      var node = document.createElement('div');
+      node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+      node.style.position = 'absolute';
+      node.style.left = 0;
+      node.style.right = 0;
+      node.style.fontSize = '30px';
+
+      node.textContent = errorMessage;
+      document.body.insertAdjacentElement('afterbegin', node);
     }
   };
 })();

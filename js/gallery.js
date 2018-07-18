@@ -1,23 +1,8 @@
 'use strict';
 
 (function () {
-  // Генерация объектов параметров фотографий
-  var generatePhotoParameter = function () {
-    for (var i = 1; i <= window.data.PHOTO_QUANTITY; i++) {
-      window.data.photoParameters[i] = {
-        url: 'photos/' + i + '.jpg',
-        likes: window.utils.generateInteger(window.data.LIKES.MIN, window.data.LIKES.MAX),
-        comments: window.data.generateComments(),
-        description: window.data.generateDescription()
-      };
-    }
-    return window.data.photoParameters;
-  };
-  generatePhotoParameter();
-  var picturesContainer = document.querySelector('.pictures');
-  var pictureTemplate = document.querySelector('#picture').content;
-
   // Создание шаблона
+  var pictureTemplate = document.querySelector('#picture').content;
   var renderPicture = function (picture) {
     var pictureElement = pictureTemplate.cloneNode(true);
     pictureElement.querySelector('.picture__img').src = picture.url;
@@ -27,12 +12,16 @@
   };
 
   // Вставка фотографий на главную
-  var createGallery = function () {
+  var picturesContainer = document.querySelector('.pictures');
+  var createGallery = function (photoParameters) {
     var fragment = document.createDocumentFragment();
-    for (var i = 1; i <= window.data.PHOTO_QUANTITY; i++) {
-      fragment.appendChild(renderPicture(window.data.photoParameters[i]));
+    for (var i = 0; i < window.data.PHOTO_QUANTITY; i++) {
+      fragment.appendChild(renderPicture(photoParameters[i]));
     }
     picturesContainer.appendChild(fragment);
+    window.bigPicture.openBigPictureHandler();
   };
-  createGallery();
+
+
+  window.load(createGallery, window.utils.errorHandler);
 })();
