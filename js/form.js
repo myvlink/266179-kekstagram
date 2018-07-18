@@ -41,7 +41,6 @@
     uploadButton.value = '';
   };
 
-
   // Управление размером
   var RESIZE_STEP = 25;
   var MIN_SIZE = 25;
@@ -75,6 +74,7 @@
     scale.classList.remove('hidden');
   };
 
+  // Применение эффекта
   var applyEffect = function () {
     var currentFilter = document.querySelector('.effects__radio:checked').value;
     switch (currentFilter) {
@@ -202,4 +202,13 @@
   };
 
   hashtagsInputField.addEventListener('keyup', checkValidity);
+
+  // Отправка формы и отмена действия по умолчанию
+  var form = document.querySelector('.img-upload__form');
+  form.addEventListener('submit', function (evt) {
+    window.backend.upload(new FormData(form), function () {
+      uploadSetupWindows.classList.add('hidden');
+    }, window.utils.errorHandler);
+    evt.preventDefault();
+  });
 })();
