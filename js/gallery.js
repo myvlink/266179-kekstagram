@@ -22,6 +22,10 @@
     window.bigPicture.openBigPictureHandler();
   };
 
-
-  window.load(createGallery, window.utils.errorHandler);
+  // Создание галереи и рендер большой картинки из скачанных данных
+  var callback = function (data) {
+    createGallery(data);
+    window.bigPicture.renderBigPicture(data);
+  };
+  window.backend.load(callback, window.utils.errorHandler);
 })();

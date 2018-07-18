@@ -206,7 +206,7 @@
   // Отправка формы и отмена действия по умолчанию
   var form = document.querySelector('.img-upload__form');
   form.addEventListener('submit', function (evt) {
-    window.upload(new FormData(form), function () {
+    window.backend.upload(new FormData(form), function () {
       uploadSetupWindows.classList.add('hidden');
     }, window.utils.errorHandler);
     evt.preventDefault();
