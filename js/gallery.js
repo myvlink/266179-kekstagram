@@ -19,13 +19,20 @@
       fragment.appendChild(renderPicture(photoParameters[i]));
     }
     picturesContainer.appendChild(fragment);
-    window.bigPicture.openBigPictureHandler();
+    // window.bigPicture.openBigPictureHandler();
   };
 
   // Создание галереи и рендер большой картинки из скачанных данных
   var processData = function (data) {
     createGallery(data);
-    window.bigPicture.renderBigPicture(data);
+    window.bigPicture.openBigPictureHandler(data);
+    showFiltersButtons();
   };
   window.backend.load(processData, window.utils.errorHandler);
+
+  // Фильтрация галереи
+  var imgFilters = document.querySelector('.img-filters');
+  var showFiltersButtons = function () {
+    imgFilters.classList.remove('img-filters--inactive');
+  };
 })();

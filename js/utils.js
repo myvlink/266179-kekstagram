@@ -35,6 +35,12 @@
 
       node.textContent = errorMessage;
       document.body.insertAdjacentElement('afterbegin', node);
+    },
+    // Удаление элементов родителя
+    removeElements: function (className) {
+      while (document.querySelector(className).firstChild) {
+        document.querySelector(className).removeChild(document.querySelector(className).firstChild);
+      }
     }
   };
 })();
