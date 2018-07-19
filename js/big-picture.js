@@ -13,7 +13,7 @@
     window.utils.removeElements('.social__comments');
   };
   var closeButtonBigPicture = document.querySelector('.big-picture__cancel');
-  var galery = document.querySelector('.pictures');
+  var gallery = document.querySelector('.pictures');
 
   window.bigPicture = {
     // Заполнение большой картинки
@@ -43,11 +43,11 @@
     },
     openBigPictureHandler: function (data) {
       var userImages = document.querySelectorAll('.picture__img');
-      galery.addEventListener('click', function (evt) {
+      gallery.addEventListener('click', function (evt) {
         var target = evt.target;
         for (var i = 0; i < userImages.length; i++) {
           if (userImages[i] === target) {
-            window.bigPicture.renderBigPicture(data, i);
+            window.bigPicture.renderBigPicture(data, window.utils.convertStringToNumber(target.getAttribute('src')) - 1);
             openBigPicture();
             closeButtonBigPicture.addEventListener('click', closeBigPicture);
           }
