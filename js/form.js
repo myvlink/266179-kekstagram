@@ -214,6 +214,8 @@
         hashtagsInputField.setCustomValidity('Хэш-тег не может быть длиннее 20 символов');
       } else if (hashtagsArray.length !== window.utils.generateUniqueArray(hashtagsArray).length) {
         hashtagsInputField.setCustomValidity('Хэш-теги не должны повторяться');
+      } else if (hashtagsArray[i] === hashtagsArray[i].toLowerCase()) {
+        hashtagsInputField.setCustomValidity('Хэш-теги не должны повторяться');
       }
     }
     if (hashtagsArray.length > 5) {
