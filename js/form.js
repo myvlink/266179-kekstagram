@@ -13,12 +13,12 @@
   var uploadSetupWindows = document.querySelector('.img-upload__overlay');
   var openUploadSetup = function () {
     uploadSetupWindows.classList.remove('hidden');
-    effectNoneButton.addEventListener('click', applyEffect);
-    effectChromeButton.addEventListener('click', applyEffect);
-    effectSepiaButton.addEventListener('click', applyEffect);
-    effectMarvinButton.addEventListener('click', applyEffect);
-    effectPhobosButton.addEventListener('click', applyEffect);
-    effectHeatButton.addEventListener('click', applyEffect);
+    effectNoneButton.addEventListener('click', onChangeApplyEffect);
+    effectChromeButton.addEventListener('click', onChangeApplyEffect);
+    effectSepiaButton.addEventListener('click', onChangeApplyEffect);
+    effectMarvinButton.addEventListener('click', onChangeApplyEffect);
+    effectPhobosButton.addEventListener('click', onChangeApplyEffect);
+    effectHeatButton.addEventListener('click', onChangeApplyEffect);
     resizeButtonMinus.addEventListener('click', reduceImage);
     resizeButtonPlus.addEventListener('click', increaseImage);
     uploadCloseButton.addEventListener('click', closeUploadSetup);
@@ -28,12 +28,12 @@
     uploadSetupWindows.classList.add('hidden');
     removeEffects();
     uploadPreviewWindow.style.transform = 'scale(1)';
-    effectNoneButton.removeEventListener('click', applyEffect);
-    effectChromeButton.removeEventListener('click', applyEffect);
-    effectSepiaButton.removeEventListener('click', applyEffect);
-    effectMarvinButton.removeEventListener('click', applyEffect);
-    effectPhobosButton.removeEventListener('click', applyEffect);
-    effectHeatButton.removeEventListener('click', applyEffect);
+    effectNoneButton.removeEventListener('click', onChangeApplyEffect);
+    effectChromeButton.removeEventListener('click', onChangeApplyEffect);
+    effectSepiaButton.removeEventListener('click', onChangeApplyEffect);
+    effectMarvinButton.removeEventListener('click', onChangeApplyEffect);
+    effectPhobosButton.removeEventListener('click', onChangeApplyEffect);
+    effectHeatButton.removeEventListener('click', onChangeApplyEffect);
     resizeButtonMinus.removeEventListener('click', reduceImage);
     resizeButtonPlus.removeEventListener('click', increaseImage);
     uploadCloseButton.removeEventListener('click', closeUploadSetup);
@@ -103,6 +103,11 @@
         showScale();
         break;
     }
+  };
+
+  var onChangeApplyEffect = function () {
+    resetScaleValue();
+    applyEffect();
   };
   var removeEffects = function () {
     imageUploadPreview.removeAttribute('class');
