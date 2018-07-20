@@ -19,38 +19,38 @@
   var uploadSetupWindows = document.querySelector('.img-upload__overlay');
   var openUploadSetupHandler = function () {
     uploadSetupWindows.classList.remove('hidden');
-    effectNoneButton.addEventListener('click', onChangeApplyEffect);
-    effectChromeButton.addEventListener('click', onChangeApplyEffect);
-    effectSepiaButton.addEventListener('click', onChangeApplyEffect);
-    effectMarvinButton.addEventListener('click', onChangeApplyEffect);
-    effectPhobosButton.addEventListener('click', onChangeApplyEffect);
-    effectHeatButton.addEventListener('click', onChangeApplyEffect);
-    resizeButtonMinus.addEventListener('click', reduceImageHandler);
-    resizeButtonPlus.addEventListener('click', increaseImageHandler);
+    effectNoneButton.addEventListener('click', radioChangeApplyEffectHandler);
+    effectChromeButton.addEventListener('click', radioChangeApplyEffectHandler);
+    effectSepiaButton.addEventListener('click', radioChangeApplyEffectHandler);
+    effectMarvinButton.addEventListener('click', radioChangeApplyEffectHandler);
+    effectPhobosButton.addEventListener('click', radioChangeApplyEffectHandler);
+    effectHeatButton.addEventListener('click', radioChangeApplyEffectHandler);
+    resizeButtonMinus.addEventListener('click', buttonClickReduceImageHandler);
+    resizeButtonPlus.addEventListener('click', buttonClickIncreaseImageHandler);
     uploadCloseButton.addEventListener('click', closeUploadSetupHandler);
-    document.addEventListener('keydown', onUploadSetupEscPress);
-    moveSliderChangeFilter();
+    document.addEventListener('keydown', uploadSetupEscPressHandler);
+    sliderMoveChangeFilter();
     resetResizeValue();
   };
   var closeUploadSetupHandler = function () {
     uploadSetupWindows.classList.add('hidden');
     removeEffects();
     uploadPreviewWindow.style.transform = 'scale(1)';
-    effectNoneButton.removeEventListener('click', onChangeApplyEffect);
-    effectChromeButton.removeEventListener('click', onChangeApplyEffect);
-    effectSepiaButton.removeEventListener('click', onChangeApplyEffect);
-    effectMarvinButton.removeEventListener('click', onChangeApplyEffect);
-    effectPhobosButton.removeEventListener('click', onChangeApplyEffect);
-    effectHeatButton.removeEventListener('click', onChangeApplyEffect);
-    resizeButtonMinus.removeEventListener('click', reduceImageHandler);
-    resizeButtonPlus.removeEventListener('click', increaseImageHandler);
+    effectNoneButton.removeEventListener('click', radioChangeApplyEffectHandler);
+    effectChromeButton.removeEventListener('click', radioChangeApplyEffectHandler);
+    effectSepiaButton.removeEventListener('click', radioChangeApplyEffectHandler);
+    effectMarvinButton.removeEventListener('click', radioChangeApplyEffectHandler);
+    effectPhobosButton.removeEventListener('click', radioChangeApplyEffectHandler);
+    effectHeatButton.removeEventListener('click', radioChangeApplyEffectHandler);
+    resizeButtonMinus.removeEventListener('click', buttonClickReduceImageHandler);
+    resizeButtonPlus.removeEventListener('click', buttonClickIncreaseImageHandler);
     uploadCloseButton.removeEventListener('click', closeUploadSetupHandler);
-    document.removeEventListener('keydown', onUploadSetupEscPress);
+    document.removeEventListener('keydown', uploadSetupEscPressHandler);
     uploadButton.value = '';
     clearForm();
     resetResizeValue();
   };
-  var onUploadSetupEscPress = function (evt) {
+  var uploadSetupEscPressHandler = function (evt) {
     if ((evt.keyCode === window.utils.ESC_KEYCODE) & (hashtagsInputField !== document.activeElement) & (textDescriptionField !== document.activeElement)) {
       closeUploadSetupHandler();
     }
@@ -61,13 +61,13 @@
   var resetResizeValue = function () {
     resizeValue.value = '100%';
   };
-  var reduceImageHandler = function () {
+  var buttonClickReduceImageHandler = function () {
     if (+resizeValue.value.slice(0, -1) > MIN_SIZE) {
       resizeValue.value = +resizeValue.value.slice(0, -1) - RESIZE_STEP + '%';
       uploadPreviewWindow.style.transform = 'scale(' + resizeValue.value.slice(0, -1) / 100 + ')';
     }
   };
-  var increaseImageHandler = function () {
+  var buttonClickIncreaseImageHandler = function () {
     if (+resizeValue.value.slice(0, -1) < MAX_SIZE) {
       resizeValue.value = +resizeValue.value.slice(0, -1) + RESIZE_STEP + '%';
       uploadPreviewWindow.style.transform = 'scale(' + resizeValue.value.slice(0, -1) / 100 + ')';
@@ -120,7 +120,7 @@
     }
   };
 
-  var onChangeApplyEffect = function () {
+  var radioChangeApplyEffectHandler = function () {
     resetScaleValue();
     applyEffect();
   };
@@ -166,11 +166,11 @@
     scalePin.style.left = scaleValue.value + '%';
   };
   scalePin.style.left = scaleValue.value + '%';
-  var moveSliderChangeFilter = function () {
+  var sliderMoveChangeFilter = function () {
     scalePin.addEventListener('mousedown', function (evt) {
       evt.preventDefault();
       startCoordX = evt.clientX;
-      var onMouseMove = function (moveEvt) {
+      var mouseMoveHandler = function (moveEvt) {
         moveEvt.preventDefault();
         var shift = moveEvt.clientX - startCoordX;
         if (scalePin.offsetLeft + shift < 0 || scalePin.offsetLeft + shift > scaleLine.offsetWidth) {
@@ -183,14 +183,14 @@
         scaleLevel.style.width = scaleValue.value + '%';
         applyEffect();
       };
-      var onMouseUp = function (upEvt) {
+      var mouseUpHandler = function (upEvt) {
         upEvt.preventDefault();
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
         applyEffect();
       };
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
+      document.addEventListener('mousemove', mouseMoveHandler);
+      document.addEventListener('mouseup', mouseUpHandler);
     });
     applyEffect();
   };

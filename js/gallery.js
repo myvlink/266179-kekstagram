@@ -53,7 +53,7 @@
     imgFilters.classList.remove('img-filters--inactive');
   };
 
-  var onChangeFilter = function () {
+  var filterChangeHandler = function () {
     imgFiltersForm.addEventListener('click', window.utils.debounce(function (evt) {
       var picturesImage = document.querySelectorAll('.picture__link');
       var target = evt.target;
@@ -82,19 +82,19 @@
         imgFiltersDiscussed.classList.add('img-filters__button--active');
         createDiscussedGallery(window.photos.data);
       }
-      window.bigPicture.openBigPictureHandler(window.photos.data);
+      window.bigPicture.bigPictureOpenHandler(window.photos.data);
     }));
   };
 
   // Создание галереи и рендер большой картинки из скачанных данных
   var processData = function (data) {
     createGallery(data);
-    window.bigPicture.openBigPictureHandler(data);
+    window.bigPicture.bigPictureOpenHandler(data);
     showFiltersButtons();
     window.photos = {
       data: data
     };
-    onChangeFilter();
+    filterChangeHandler();
   };
   window.backend.load(processData, window.utils.errorHandler);
 
