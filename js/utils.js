@@ -2,18 +2,44 @@
 
 (function () {
   window.utils = {
+
+    // Возврат только чисел из строки
+    convertStringToNumber: function (string) {
+      return string.replace(/\D+/g, '');
+    },
+
+    // Генерация массива рандомных чисел
+    generateArrayRandomNumber: function (min, max) {
+      var totalNumbers = max - min + 1;
+      var arrayTotalNumbers = [];
+      var arrayRandomNumbers = [];
+      var tempRandomNumber;
+      while (totalNumbers--) {
+        arrayTotalNumbers.push(totalNumbers + min);
+      }
+      while (arrayTotalNumbers.length) {
+        tempRandomNumber = Math.round(Math.random() * (arrayTotalNumbers.length - 1));
+        arrayRandomNumbers.push(arrayTotalNumbers[tempRandomNumber]);
+        arrayTotalNumbers.splice(tempRandomNumber, 1);
+      }
+      return arrayRandomNumbers;
+    },
+
     // Генерация случайного числа
     generateInteger: function (min, max) {
       return Math.floor(min + Math.random() * (max + 1 - min));
     },
+
     // Визуальное скрытие элементов
     visuallyHideElement: function (element) {
       document.querySelector(element).classList.add('visually-hidden');
     },
+
     // Визуальное скрытие элементов
     hideElement: function (element) {
       document.querySelector(element).classList.add('hidden');
     },
+
     // Возврат массива без повторений
     generateUniqueArray: function (array) {
       var obj = {};
@@ -23,6 +49,7 @@
       }
       return Object.keys(obj);
     },
+
     // Вывод ошибки
     errorHandler: function (errorMessage) {
       var node = document.createElement('div');
@@ -35,6 +62,13 @@
 
       node.textContent = errorMessage;
       document.body.insertAdjacentElement('afterbegin', node);
+    },
+
+    // Удаление элементов родителя
+    removeElements: function (className) {
+      while (document.querySelector(className).firstChild) {
+        document.querySelector(className).removeChild(document.querySelector(className).firstChild);
+      }
     }
   };
 })();
