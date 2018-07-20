@@ -35,7 +35,7 @@
       document.querySelector(element).classList.add('visually-hidden');
     },
 
-    // Визуальное скрытие элементов
+    // Cкрытие элементов
     hideElement: function (element) {
       document.querySelector(element).classList.add('hidden');
     },
