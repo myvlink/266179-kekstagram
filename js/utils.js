@@ -3,6 +3,23 @@
 (function () {
   window.utils = {
 
+    ESC_KEYCODE: 27,
+    DEBOUNCE_INTERVAL: 500,
+    // Устранение дребезга
+    debounce: function (fun) {
+      var lastTimeout = null;
+
+      return function () {
+        var args = arguments;
+        if (lastTimeout) {
+          window.clearTimeout(lastTimeout);
+        }
+        lastTimeout = window.setTimeout(function () {
+          fun.apply(null, args);
+        }, window.utils.DEBOUNCE_INTERVAL);
+      };
+    },
+
     // Возврат только чисел из строки
     convertStringToNumber: function (string) {
       return string.replace(/\D+/g, '');

@@ -5,12 +5,21 @@
 
   // Отображение окна картинки
   var bigPicture = document.querySelector('.big-picture');
-  var openBigPicture = function () {
+  var bigPictureOpenHandler = function () {
     bigPicture.classList.remove('hidden');
+    document.addEventListener('keydown', bigPictureEscPressHandler);
   };
-  var closeBigPicture = function () {
+  var bigPictureCloseHandler = function () {
     bigPicture.classList.add('hidden');
     window.utils.removeElements('.social__comments');
+    document.removeEventListener('keydown', bigPictureEscPressHandler);
+    closeButtonBigPicture.removeEventListener('click', bigPictureCloseHandler);
+  };
+
+  var bigPictureEscPressHandler = function (evt) {
+    if (evt.keyCode === window.utils.ESC_KEYCODE) {
+      bigPictureCloseHandler();
+    }
   };
   var closeButtonBigPicture = document.querySelector('.big-picture__cancel');
   var gallery = document.querySelector('.pictures');
@@ -41,22 +50,22 @@
       }
       document.querySelector('.social__comments').appendChild(fragment);
     },
-    openBigPictureHandler: function (data) {
+    bigPictureOpenHandler: function (data) {
       var userImages = document.querySelectorAll('.picture__img');
       gallery.addEventListener('click', function (evt) {
         var target = evt.target;
         for (var i = 0; i < userImages.length; i++) {
           if (userImages[i] === target) {
             window.bigPicture.renderBigPicture(data, window.utils.convertStringToNumber(target.getAttribute('src')) - 1);
-            openBigPicture();
-            closeButtonBigPicture.addEventListener('click', closeBigPicture);
+            bigPictureOpenHandler();
+            closeButtonBigPicture.addEventListener('click', bigPictureCloseHandler);
           }
         }
       });
     },
   };
 
-  window.bigPicture.openBigPictureHandler();
+  window.bigPicture.bigPictureOpenHandler();
   window.utils.visuallyHideElement('.social__comment-count');
   window.utils.visuallyHideElement('.social__loadmore');
 })();
