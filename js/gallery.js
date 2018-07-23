@@ -11,34 +11,31 @@
     return pictureElement;
   };
 
-  // Вставка фотографий на главную
+  // Создание галерей
   var picturesContainer = document.querySelector('.pictures');
   var createGallery = function (photoParameters) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < window.data.PHOTO_QUANTITY; i++) {
-      fragment.appendChild(renderPicture(photoParameters[i]));
-    }
+    photoParameters.forEach(function (photoParameter) {
+      fragment.appendChild(renderPicture(photoParameter));
+    });
     picturesContainer.appendChild(fragment);
   };
-
-  // Создание галерей
   var createNewGallery = function (photoParameters) {
     var fragment = document.createDocumentFragment();
-    window.utils.generateArrayRandomNumber(1, 10).forEach(function (index) {
+    window.utils.generateArrayRandomNumbers(1, 10).forEach(function (index) {
       fragment.appendChild(renderPicture(photoParameters[index]));
     });
     picturesContainer.appendChild(fragment);
   };
-  var compareCommentsLength = function (commentsA, commentsB) {
-    return commentsA.comments.length - commentsB.comments.length;
-  };
   var createDiscussedGallery = function (photoParameters) {
-    var sortedArray = photoParameters.slice();
-    sortedArray.sort(compareCommentsLength);
+    var sortedPhotoParameters = photoParameters.slice();
+    sortedPhotoParameters.sort(function (a, b) {
+      return a.comments.length - b.comments.length;
+    });
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < window.data.PHOTO_QUANTITY; i++) {
-      fragment.appendChild(renderPicture(sortedArray[i]));
-    }
+    sortedPhotoParameters.forEach(function (sortedPhotoParameter) {
+      fragment.appendChild(renderPicture(sortedPhotoParameter));
+    });
     picturesContainer.appendChild(fragment);
   };
 
@@ -82,14 +79,14 @@
         imgFiltersDiscussed.classList.add('img-filters__button--active');
         createDiscussedGallery(window.photos.data);
       }
-      window.bigPicture.bigPictureOpenHandler(window.photos.data);
+      window.bigPicture.bigPictureAssemblyData(window.photos.data);
     }));
   };
 
   // Создание галереи и рендер большой картинки из скачанных данных
   var processData = function (data) {
     createGallery(data);
-    window.bigPicture.bigPictureOpenHandler(data);
+    window.bigPicture.bigPictureAssemblyData(data);
     showFiltersButtons();
     window.photos = {
       data: data

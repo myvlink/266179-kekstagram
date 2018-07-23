@@ -4,6 +4,7 @@
   var RESIZE_STEP = 25;
   var MIN_SIZE = 25;
   var MAX_SIZE = 100;
+  var MAX_HASHTAGS = 5;
   var MIN_HASHTAG_LENGTH = 2;
   var MAX_HASHTAG_LENGTH = 20;
 
@@ -14,8 +15,8 @@
   // Окно настроек при загрузке файла
   var resizeButtonMinus = document.querySelector('.resize__control--minus');
   var resizeButtonPlus = document.querySelector('.resize__control--plus');
-  var uploadButton = document.getElementById('upload-file');
-  var uploadCloseButton = document.getElementById('upload-cancel');
+  var uploadButton = document.querySelector('.img-upload__input');
+  var uploadCloseButton = document.querySelector('.img-upload__cancel');
   var uploadSetupWindows = document.querySelector('.img-upload__overlay');
   var openUploadSetupHandler = function () {
     uploadSetupWindows.classList.remove('hidden');
@@ -51,7 +52,7 @@
     resetResizeValue();
   };
   var uploadSetupEscPressHandler = function (evt) {
-    if ((evt.keyCode === window.utils.ESC_KEYCODE) & (hashtagsInputField !== document.activeElement) & (textDescriptionField !== document.activeElement)) {
+    if ((evt.keyCode === window.utils.ESC_KEYCODE) && (hashtagsInputField !== document.activeElement) && (textDescriptionField !== document.activeElement)) {
       closeUploadSetupHandler();
     }
   };
@@ -75,6 +76,7 @@
   };
 
   // Применение эффекта на изображение
+  // Тут нужно переделать под делегирование
   var effectNoneButton = document.getElementById('effect-none');
   var effectChromeButton = document.getElementById('effect-chrome');
   var effectSepiaButton = document.getElementById('effect-sepia');
@@ -200,28 +202,30 @@
   // Валидация хэш-тегов
   var hashtagsInputField = document.querySelector('.text__hashtags');
   var checkValidity = function () {
-    var hashtagsArray = hashtagsInputField.value.split(' ');
+    var hashtags = hashtagsInputField.value.toLowerCase().split(' ');
+    hashtags = hashtags.filter(function (hashtag) {
+      return hashtag !== '';
+    });
     hashtagsInputField.setCustomValidity('');
-    for (var i = 0; i < hashtagsArray.length; i++) {
-      if (!hashtagsArray[i]) {
-        hashtagsInputField.setCustomValidity('Не должно быть пустых хэш-тегов');
-        return;
-      } else if (hashtagsArray[i].charAt(0) !== '#') {
-        hashtagsInputField.setCustomValidity('Хэш-тег начинается с символа #');
-      } else if (hashtagsArray[i].length < MIN_HASHTAG_LENGTH) {
-        hashtagsInputField.setCustomValidity('Хэш-тег не может состоять только из одной решётки');
-      } else if (hashtagsArray[i].length > MAX_HASHTAG_LENGTH) {
-        hashtagsInputField.setCustomValidity('Хэш-тег не может быть длиннее 20 символов');
-      } else if (hashtagsArray.length !== window.utils.generateUniqueArray(hashtagsArray).length) {
-        hashtagsInputField.setCustomValidity('Хэш-теги не должны повторяться');
-      } else if (hashtagsArray[i] === hashtagsArray[i].toLowerCase()) {
-        hashtagsInputField.setCustomValidity('Хэш-теги не должны повторяться');
-      }
+    if (!hashtagsInputField.value) {
+      hashtagsInputField.setCustomValidity('');
+      return;
     }
-    if (hashtagsArray.length > 5) {
+    if (hashtags.length > MAX_HASHTAGS) {
       hashtagsInputField.setCustomValidity('Задайте не более пяти хэш-тегов.');
       return;
     }
+    hashtags.forEach(function (hashtag) {
+      if (hashtag.charAt(0) !== '#') {
+        hashtagsInputField.setCustomValidity('Хэш-тег начинается с символа #');
+      } else if (hashtag.length < MIN_HASHTAG_LENGTH) {
+        hashtagsInputField.setCustomValidity('Хэш-тег не может состоять только из одной решётки');
+      } else if (hashtag.length > MAX_HASHTAG_LENGTH) {
+        hashtagsInputField.setCustomValidity('Хэш-тег не может быть длиннее 20 символов');
+      } else if (hashtags.length !== window.utils.generateUniqueArray(hashtags).length) {
+        hashtagsInputField.setCustomValidity('Хэш-теги не должны повторяться');
+      }
+    });
   };
 
   hashtagsInputField.addEventListener('keyup', checkValidity);
