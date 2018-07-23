@@ -26,12 +26,12 @@
 
   window.bigPicture = {
     // Заполнение большой картинки
-    renderBigPicture: function (picture, index) {
-      document.querySelector('.big-picture__img img').src = picture[index].url;
-      document.querySelector('.likes-count').textContent = picture[index].likes;
-      document.querySelector('.comments-count').textContent = picture[index].comments.length;
+    renderBigPicture: function (pictures, index) {
+      document.querySelector('.big-picture__img img').src = pictures[index].url;
+      document.querySelector('.likes-count').textContent = pictures[index].likes;
+      document.querySelector('.comments-count').textContent = pictures[index].comments.length;
       var fragment = document.createDocumentFragment();
-      for (var i = 0; i < picture[index].comments.length; i++) {
+      for (var i = 0; i < pictures[index].comments.length; i++) {
         var comment = document.createElement('li');
         var avatar = document.createElement('img');
         var text = document.createElement('p');
@@ -42,7 +42,7 @@
         avatar.width = '35';
         avatar.height = '35';
         text.classList.add('social__text');
-        text.textContent = picture[index].comments[i];
+        text.textContent = pictures[index].comments[i];
         comment.appendChild(avatar);
         comment.appendChild(text);
         fragment.appendChild(comment);
@@ -50,7 +50,7 @@
       }
       document.querySelector('.social__comments').appendChild(fragment);
     },
-    bigPictureOpenHandler: function (data) {
+    bigPictureAssemblyData: function (data) {
       var userImages = document.querySelectorAll('.picture__img');
       gallery.addEventListener('click', function (evt) {
         var target = evt.target;
@@ -64,8 +64,6 @@
       });
     },
   };
-
-  window.bigPicture.bigPictureOpenHandler();
   window.utils.visuallyHideElement('.social__comment-count');
   window.utils.visuallyHideElement('.social__loadmore');
 })();

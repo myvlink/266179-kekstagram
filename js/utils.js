@@ -26,20 +26,20 @@
     },
 
     // Генерация массива рандомных чисел
-    generateArrayRandomNumber: function (min, max) {
-      var totalNumbers = max - min + 1;
-      var arrayTotalNumbers = [];
-      var arrayRandomNumbers = [];
+    generateArrayRandomNumbers: function (min, max) {
+      var totalNumber = max - min + 1;
+      var totalNumbers = [];
+      var randomNumbers = [];
       var tempRandomNumber;
-      while (totalNumbers--) {
-        arrayTotalNumbers.push(totalNumbers + min);
+      while (totalNumber--) {
+        totalNumbers.push(totalNumber + min);
       }
-      while (arrayTotalNumbers.length) {
-        tempRandomNumber = Math.round(Math.random() * (arrayTotalNumbers.length - 1));
-        arrayRandomNumbers.push(arrayTotalNumbers[tempRandomNumber]);
-        arrayTotalNumbers.splice(tempRandomNumber, 1);
+      while (totalNumbers.length) {
+        tempRandomNumber = Math.round(Math.random() * (totalNumbers.length - 1));
+        randomNumbers.push(totalNumbers[tempRandomNumber]);
+        totalNumbers.splice(tempRandomNumber, 1);
       }
-      return arrayRandomNumbers;
+      return randomNumbers;
     },
 
     // Генерация случайного числа
@@ -60,10 +60,10 @@
     // Возврат массива без повторений
     generateUniqueArray: function (array) {
       var obj = {};
-      for (var i = 0; i < array.length; i++) {
-        var str = array[i];
+      array.forEach(function (item) {
+        var str = item;
         obj[str] = true;
-      }
+      });
       return Object.keys(obj);
     },
 
@@ -83,9 +83,8 @@
 
     // Удаление элементов родителя
     removeElements: function (className) {
-      while (document.querySelector(className).firstChild) {
-        document.querySelector(className).removeChild(document.querySelector(className).firstChild);
-      }
+      var element = document.querySelector(className);
+      element.innerHTML = '';
     }
   };
 })();
