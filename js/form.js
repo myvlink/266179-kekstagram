@@ -7,6 +7,7 @@
   var MAX_HASHTAGS = 5;
   var MIN_HASHTAG_LENGTH = 2;
   var MAX_HASHTAG_LENGTH = 20;
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   // Превью загрузки изображения и кнопки управления размером
   var uploadPreviewWindow = document.querySelector('.img-upload__preview');
@@ -229,6 +230,22 @@
   };
 
   hashtagsInputField.addEventListener('keyup', checkValidity);
+
+  // Предпросмотр пользовательской фотографии
+  uploadButton.addEventListener('change', function () {
+    var file = uploadButton.files[0];
+    var fileName = file.name.toLowerCase();
+    var matches = FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+    if (matches) {
+      var reader = new FileReader();
+      reader.addEventListener('load', function () {
+        imageUploadPreview.src = reader.result;
+      });
+      reader.readAsDataURL(file);
+    }
+  });
 
   // Очистка полей формы
   var textDescriptionField = document.querySelector('.text__description');
