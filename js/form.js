@@ -219,12 +219,19 @@
     hashtags.forEach(function (hashtag) {
       if (hashtag.charAt(0) !== '#') {
         hashtagsInputField.setCustomValidity('Хэш-тег начинается с символа #');
-      } else if (hashtag.length < MIN_HASHTAG_LENGTH) {
+        return;
+      }
+      if (hashtag.length < MIN_HASHTAG_LENGTH) {
         hashtagsInputField.setCustomValidity('Хэш-тег не может состоять только из одной решётки');
-      } else if (hashtag.length > MAX_HASHTAG_LENGTH) {
+        return;
+      }
+      if (hashtag.length > MAX_HASHTAG_LENGTH) {
         hashtagsInputField.setCustomValidity('Хэш-тег не может быть длиннее 20 символов');
-      } else if (hashtags.length !== window.utils.generateUniqueArray(hashtags).length) {
+        return;
+      }
+      if (hashtags.length !== window.utils.generateUniqueArray(hashtags).length) {
         hashtagsInputField.setCustomValidity('Хэш-теги не должны повторяться');
+        return;
       }
     });
   };
