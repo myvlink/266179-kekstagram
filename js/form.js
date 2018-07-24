@@ -51,6 +51,7 @@
     uploadButton.value = '';
     clearForm();
     resetResizeValue();
+    resetScaleValue();
   };
   var uploadSetupEscPressHandler = function (evt) {
     if ((evt.keyCode === window.utils.ESC_KEYCODE) && (hashtagsInputField !== document.activeElement) && (textDescriptionField !== document.activeElement)) {
