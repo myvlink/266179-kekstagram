@@ -99,28 +99,27 @@
     switch (currentFilter) {
       case 'none':
         removeEffects();
-        hideScale();
         break;
       case 'chrome':
         addChromeEffect();
-        showScale();
         break;
       case 'sepia':
         addSepiaEffect();
-        showScale();
         break;
       case 'marvin':
         addMarvinEffect();
-        showScale();
         break;
       case 'phobos':
         addPhobosEffect();
-        showScale();
         break;
       case 'heat':
         addHeatEffect();
-        showScale();
         break;
+    }
+    if (currentFilter === 'none') {
+      hideScale();
+    } else {
+      showScale();
     }
   };
 
