@@ -7,6 +7,7 @@
   var MAX_HASHTAGS = 5;
   var MIN_HASHTAG_LENGTH = 2;
   var MAX_HASHTAG_LENGTH = 20;
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   // Превью загрузки изображения и кнопки управления размером
   var uploadPreviewWindow = document.querySelector('.img-upload__preview');
@@ -50,6 +51,7 @@
     uploadButton.value = '';
     clearForm();
     resetResizeValue();
+    resetScaleValue();
   };
   var uploadSetupEscPressHandler = function (evt) {
     if ((evt.keyCode === window.utils.ESC_KEYCODE) && (hashtagsInputField !== document.activeElement) && (textDescriptionField !== document.activeElement)) {
@@ -97,28 +99,27 @@
     switch (currentFilter) {
       case 'none':
         removeEffects();
-        hideScale();
         break;
       case 'chrome':
         addChromeEffect();
-        showScale();
         break;
       case 'sepia':
         addSepiaEffect();
-        showScale();
         break;
       case 'marvin':
         addMarvinEffect();
-        showScale();
         break;
       case 'phobos':
         addPhobosEffect();
-        showScale();
         break;
       case 'heat':
         addHeatEffect();
-        showScale();
         break;
+    }
+    if (currentFilter === 'none') {
+      hideScale();
+    } else {
+      showScale();
     }
   };
 
@@ -218,17 +219,40 @@
     hashtags.forEach(function (hashtag) {
       if (hashtag.charAt(0) !== '#') {
         hashtagsInputField.setCustomValidity('Хэш-тег начинается с символа #');
-      } else if (hashtag.length < MIN_HASHTAG_LENGTH) {
+        return;
+      }
+      if (hashtag.length < MIN_HASHTAG_LENGTH) {
         hashtagsInputField.setCustomValidity('Хэш-тег не может состоять только из одной решётки');
-      } else if (hashtag.length > MAX_HASHTAG_LENGTH) {
+        return;
+      }
+      if (hashtag.length > MAX_HASHTAG_LENGTH) {
         hashtagsInputField.setCustomValidity('Хэш-тег не может быть длиннее 20 символов');
-      } else if (hashtags.length !== window.utils.generateUniqueArray(hashtags).length) {
+        return;
+      }
+      if (hashtags.length !== window.utils.generateUniqueArray(hashtags).length) {
         hashtagsInputField.setCustomValidity('Хэш-теги не должны повторяться');
+        return;
       }
     });
   };
 
   hashtagsInputField.addEventListener('keyup', checkValidity);
+
+  // Предпросмотр пользовательской фотографии
+  uploadButton.addEventListener('change', function () {
+    var file = uploadButton.files[0];
+    var fileName = file.name.toLowerCase();
+    var matches = FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+    if (matches) {
+      var reader = new FileReader();
+      reader.addEventListener('load', function () {
+        imageUploadPreview.src = reader.result;
+      });
+      reader.readAsDataURL(file);
+    }
+  });
 
   // Очистка полей формы
   var textDescriptionField = document.querySelector('.text__description');
