@@ -94,8 +94,9 @@
   };
 
   // Применение эффекта
+  var currentFilter;
   var applyEffect = function () {
-    var currentFilter = document.querySelector('.effects__radio:checked').value;
+    // var currentFilter = document.querySelector('.effects__radio:checked').value;
     switch (currentFilter) {
       case 'none':
         removeEffects();
@@ -123,9 +124,18 @@
     }
   };
 
+  var effectsRadioButtons = document.querySelectorAll('.effects__radio');
+  var effectsList = document.querySelector('.effects__list');
   var radioChangeApplyEffectHandler = function () {
     resetScaleValue();
-    applyEffect();
+    effectsList.addEventListener('click', function (evt) {
+      effectsRadioButtons.forEach(function (button) {
+        if (evt.target === button) {
+          currentFilter = evt.target.value;
+        }
+      });
+      applyEffect();
+    });
   };
   var removeEffects = function () {
     imageUploadPreview.removeAttribute('class');
