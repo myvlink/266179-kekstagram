@@ -19,14 +19,12 @@
   var uploadButton = document.querySelector('.img-upload__input');
   var uploadCloseButton = document.querySelector('.img-upload__cancel');
   var uploadSetupWindows = document.querySelector('.img-upload__overlay');
+  var effectsRadioButtons = document.querySelectorAll('.effects__radio');
   var openUploadSetupHandler = function () {
     uploadSetupWindows.classList.remove('hidden');
-    effectNoneButton.addEventListener('click', radioChangeApplyEffectHandler);
-    effectChromeButton.addEventListener('click', radioChangeApplyEffectHandler);
-    effectSepiaButton.addEventListener('click', radioChangeApplyEffectHandler);
-    effectMarvinButton.addEventListener('click', radioChangeApplyEffectHandler);
-    effectPhobosButton.addEventListener('click', radioChangeApplyEffectHandler);
-    effectHeatButton.addEventListener('click', radioChangeApplyEffectHandler);
+    effectsRadioButtons.forEach(function (button) {
+      button.addEventListener('click', radioChangeApplyEffectHandler);
+    });
     resizeButtonMinus.addEventListener('click', buttonClickReduceImageHandler);
     resizeButtonPlus.addEventListener('click', buttonClickIncreaseImageHandler);
     uploadCloseButton.addEventListener('click', closeUploadSetupHandler);
@@ -38,12 +36,9 @@
     uploadSetupWindows.classList.add('hidden');
     removeEffects();
     uploadPreviewWindow.style.transform = 'scale(1)';
-    effectNoneButton.removeEventListener('click', radioChangeApplyEffectHandler);
-    effectChromeButton.removeEventListener('click', radioChangeApplyEffectHandler);
-    effectSepiaButton.removeEventListener('click', radioChangeApplyEffectHandler);
-    effectMarvinButton.removeEventListener('click', radioChangeApplyEffectHandler);
-    effectPhobosButton.removeEventListener('click', radioChangeApplyEffectHandler);
-    effectHeatButton.removeEventListener('click', radioChangeApplyEffectHandler);
+    effectsRadioButtons.forEach(function (button) {
+      button.removeEventListener('click', radioChangeApplyEffectHandler);
+    });
     resizeButtonMinus.removeEventListener('click', buttonClickReduceImageHandler);
     resizeButtonPlus.removeEventListener('click', buttonClickIncreaseImageHandler);
     uploadCloseButton.removeEventListener('click', closeUploadSetupHandler);
@@ -78,13 +73,6 @@
   };
 
   // Применение эффекта на изображение
-  // Тут нужно переделать под делегирование
-  var effectNoneButton = document.getElementById('effect-none');
-  var effectChromeButton = document.getElementById('effect-chrome');
-  var effectSepiaButton = document.getElementById('effect-sepia');
-  var effectMarvinButton = document.getElementById('effect-marvin');
-  var effectPhobosButton = document.getElementById('effect-phobos');
-  var effectHeatButton = document.getElementById('effect-heat');
   var scale = document.querySelector('.scale');
   var hideScale = function () {
     scale.classList.add('hidden');
@@ -94,9 +82,8 @@
   };
 
   // Применение эффекта
-  var currentFilter;
+  var currentFilter = 'heat';
   var applyEffect = function () {
-    // var currentFilter = document.querySelector('.effects__radio:checked').value;
     switch (currentFilter) {
       case 'none':
         removeEffects();
@@ -123,18 +110,14 @@
       showScale();
     }
   };
-
-  var effectsRadioButtons = document.querySelectorAll('.effects__radio');
   var effectsList = document.querySelector('.effects__list');
   var radioChangeApplyEffectHandler = function () {
     resetScaleValue();
     effectsList.addEventListener('click', function (evt) {
-      effectsRadioButtons.forEach(function (button) {
-        if (evt.target === button) {
-          currentFilter = evt.target.value;
-        }
-      });
-      applyEffect();
+      if (evt.target.closest('.effects__radio')) {
+        currentFilter = evt.target.value;
+        applyEffect();
+      }
     });
   };
   var removeEffects = function () {
@@ -177,6 +160,7 @@
     scaleValue.value = 100;
     scaleLevel.style.width = scaleValue.value + '%';
     scalePin.style.left = scaleValue.value + '%';
+    currentFilter = 'heat';
   };
   scalePin.style.left = scaleValue.value + '%';
   var sliderMoveChangeFilter = function () {
@@ -275,7 +259,7 @@
   // Отправка формы и отмена действия по умолчанию
   var form = document.querySelector('.img-upload__form');
   form.addEventListener('submit', function (evt) {
-    window.backend.upload(new FormData(form), function () {
+    window.backend.load('POST', new FormData(form), function () {
       uploadSetupWindows.classList.add('hidden');
     }, window.utils.errorHandler);
     evt.preventDefault();
